@@ -148,11 +148,102 @@
  *      implement its own management interface. See Interpreter (243) for an example.
  */
 
+/**
+ * Equipment such as computers and stereo components are often organized into part-whole or containment hierarchies.
+ * For example, a chassis can contain drives and planar boards, a bus can contain cards, and a cabinet can contain
+ * chassis, buses, and so forth. Such structures can be modeled naturally with the Composite pattern.
+ *
+ * Equipment class defines an interface for all equipment in the part-whole hierarchy.
+ *
+ * Component
+ */
+interface IEquipment {
+    _name: string
+
+    get name(): string
+    power?(): number
+    netPrice?(): number
+
+    add?(equipment: IEquipment): void
+    remove?(equipment: IEquipment): void
+}
+
+class Equipment implements IEquipment {
+    _name: string
+
+    constructor(name: string) {
+        this._name = name
+    }
+
+    get name(): string {
+        return this._name
+    }
+}
+
+/**
+ * Leaf
+ *
+ * Subclasses of Equipment might include Leaf classes that represent disk drives, integrated circuits, and switches:
+ */
+class Card extends Equipment {
+    netPrice(): number {
+        return 1;
+    }
+}
+
+class FloppyDisk extends Equipment {
+    netPrice(): number {
+        return 2;
+    }
+}
 
 
+/**
+ * Composite
+ *
+ */
+class CompositeEquipment extends Equipment{
+    equipments: IEquipment[]
+
+    constructor(name: string) {
+        super(name)
+        this.equipments = []
+    }
+
+    add(equipment: IEquipment) {
+        this.equipments.push(equipment)
+    }
+
+    remove(equipment: IEquipment) {
+        const index: number = this.equipments.findIndex(equip => equip.name === equipment.name)
+        if (index !== -1){
+            this.equipments.splice(index)
+        }
+    }
+
+    netPrice(): number {
+        // @ts-ignore
+        return this.equipments.reduce((acc, equipment) => acc += equipment.netPrice(), 0)
+    }
+}
+
+class Cabinet extends CompositeEquipment {}
+class Chassis extends CompositeEquipment {}
+class Bus extends CompositeEquipment {}
+
+const cabinet: Cabinet = new Cabinet('PC Cabinet')
+const chassis: Chassis = new Chassis('PC Chassis')
+const bus: Bus = new Bus('MCA Bus')
+const card: Card = new Card('Video Card')
+const floppyDisk: FloppyDisk = new FloppyDisk('3.5in Floppy')
 
 
+cabinet.add(chassis)
+chassis.add(bus)
+chassis.add(floppyDisk)
+bus.add(card)
 
+console.log(`cabinet price: ${cabinet.netPrice()}`)
 
 
 
