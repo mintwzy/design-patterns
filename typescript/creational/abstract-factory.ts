@@ -51,10 +51,41 @@ Use the Abstract Factory pattern when
   kinds of products requires extending the factory interface, which involves changing the AbstractFactory class and all
   of its subclasses.
  */
+import {Direction, Door, IMaze, Room, Wall} from "./index";
 
+interface IMazeFactory {
+    makeMaze(): IMaze;
+    makeWall(): Wall;
+    makeRoom(n: number): Room;
+    makeDoor(r1: Room, r2: Room): Door;
+}
 
+class MazeGame {
+    constructor() {
+    }
 
+    createMaze(factory: IMazeFactory): IMaze {
+        const maze: IMaze = factory.makeMaze();
+        const r1: Room = factory.makeRoom(1)
+        const r2: Room = factory.makeRoom(2)
+        const door: Door = factory.makeDoor(r1, r2)
 
+        maze.addRoom(r1)
+        maze.addRoom(r2)
+
+        r1.setSide(Direction.NORTH, factory.makeWall())
+        r1.setSide(Direction.EAST, door)
+        r1.setSide(Direction.SOUTH, factory.makeWall())
+        r1.setSide(Direction.WEST, factory.makeWall())
+
+        r2.setSide(Direction.NORTH, factory.makeWall())
+        r2.setSide(Direction.EAST, factory.makeWall())
+        r2.setSide(Direction.SOUTH, factory.makeWall())
+        r2.setSide(Direction.WEST, door)
+
+        return maze;
+    }
+}
 
 
 
