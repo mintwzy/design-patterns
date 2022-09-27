@@ -24,7 +24,7 @@ interface MapSite {
 interface IMaze {
     addRoom(room: Room): void;
 
-    roomNo(num: number): Room
+    // roomNo(num: number): Room
 }
 
 interface IMazeGame {
@@ -51,10 +51,6 @@ class Room implements MapSite {
         this._sides = []
     }
 
-    getSide(direction: Direction): MapSite {
-
-    }
-
     setSide(direction: Direction, map: MapSite): void {
 
     }
@@ -73,7 +69,7 @@ class Wall implements MapSite {
 }
 
 class Door implements MapSite {
-    constructor() {
+    constructor(r1: Room, r2: Room) {
     }
 
     enter() {
@@ -81,7 +77,51 @@ class Door implements MapSite {
 }
 
 namespace Poor {
+  class Maze implements IMaze {
+    constructor() {
+    }
+    addRoom(room: Room) {
+    }
+  }
 
+  /*
+  Another class we define is MazeGame, which creates the maze. One straightforward way to create a maze is with a
+  series of operations that add components to a maze and then interconnect them. For example, the following member
+  function will create a maze consisting of two rooms with a door between them:
+
+  This function is pretty complicated, considering that all it does is create a maze with two rooms. There are obvious
+  ways to make it simpler. For example, the Room constructor could initialize the sides with walls ahead of time. But
+  that just moves the code somewhere else. The real problem with this member function isn’t its size but its
+  inflexibility. It hard-codes the maze layout. Changing the layout means changing this member function, either by
+  overriding it—which means reimplementing the whole thing—or by changing parts of it—which is error-prone and doesn’t
+  promote reuse.
+   */
+  class MazeGame {
+    constructor() {
+    }
+
+    createMaze(): IMaze {
+      const maze: Maze = new Maze()
+      const r1: Room = new Room(1)
+      const r2: Room = new Room(2)
+      const door: Door = new Door(r1, r2)
+
+      maze.addRoom(r1)
+      maze.addRoom(r2)
+
+      r1.setSide(Direction.NORTH, new Wall())
+      r1.setSide(Direction.EAST, door)
+      r1.setSide(Direction.SOUTH, new Wall())
+      r1.setSide(Direction.WEST, new Wall())
+
+      r2.setSide(Direction.NORTH, new Wall())
+      r2.setSide(Direction.EAST, new Wall())
+      r2.setSide(Direction.SOUTH, new Wall())
+      r2.setSide(Direction.WEST, door)
+
+      return maze;
+    }
+  }
 }
 
 export {
