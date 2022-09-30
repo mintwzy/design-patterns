@@ -24,7 +24,7 @@ interface MapSite {
 interface IMaze {
     addRoom(room: Room): void;
 
-    // roomNo(num: number): Room
+    roomNo(num: number): Room
 }
 
 interface IMazeGame {
@@ -76,14 +76,16 @@ class Door implements MapSite {
     }
 }
 
-namespace Poor {
-  class Maze implements IMaze {
+class Maze implements IMaze {
     constructor() {
     }
     addRoom(room: Room) {
     }
-  }
+    roomNo(num: number): Room {
+    }
+}
 
+namespace Poor {
   /*
   Another class we define is MazeGame, which creates the maze. One straightforward way to create a maze is with a
   series of operations that add components to a maze and then interconnect them. For example, the following member
@@ -97,9 +99,6 @@ namespace Poor {
   promote reuse.
    */
   class MazeGame {
-    constructor() {
-    }
-
     createMaze(): IMaze {
       const maze: Maze = new Maze()
       const r1: Room = new Room(1)
@@ -130,7 +129,8 @@ export {
     Wall,
     Room,
     Door,
-    Direction
+    Direction,
+    Maze
 }
 
 
