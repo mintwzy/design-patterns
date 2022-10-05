@@ -99,7 +99,7 @@ class MazeGame {
     }
 }
 
-
+export default IMazeFactory
 
 
 
