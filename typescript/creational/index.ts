@@ -60,6 +60,8 @@ class Room implements MapSite {
     }
 }
 
+class RoomWithBomb extends Room {}
+
 class Wall implements MapSite {
    constructor() {
    }
@@ -67,6 +69,8 @@ class Wall implements MapSite {
    enter() {
    }
 }
+
+class BombedWall extends Wall {}
 
 class Door implements MapSite {
     constructor(r1: Room, r2: Room) {
@@ -127,7 +131,9 @@ export {
     IMaze,
     IMazeGame,
     Wall,
+    BombedWall,
     Room,
+    RoomWithBomb,
     Door,
     Direction,
     Maze
