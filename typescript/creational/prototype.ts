@@ -115,7 +115,7 @@ Consider the following issues when implementing prototypes:
     explicitly or within Initialize) before you reinitialize them.
  */
 
-import IMazeFactory from "./abstract-factory";
+import IMazeFactory from "./abstract-factory/abstract-factory";
 import {BombedWall, Door, IMaze, Maze, Room, Wall} from "./index";
 
 /*
